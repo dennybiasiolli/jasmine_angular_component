@@ -1,20 +1,21 @@
+/*jshint esversion: 6 */
 describe('Component: masterComponent', function() {
   beforeEach(angular.mock.module('myModule'));
 
-  var element;
-  var childElement;
-  var scope;
+  let element;
+  let childElement;
+  let scope;
   beforeEach(inject(function($rootScope, $compile) {
     scope = $rootScope.$new();
     element = angular.element('<master-component my-binding="{{param1}}" my-text-for-call-from-child="{{param2}}"></master-component>');
     element = $compile(element)(scope);
     scope.param1 = '1.5';
-    scope.param2 = 'Primo test';
+    scope.param2 = 'First test';
     scope.$apply();
   }));
 
-  var controller;
-  var childController;
+  let controller;
+  let childController;
   beforeEach(function() {
     controller = element.controller('masterComponent');
     spyOn(controller, 'callFromChild');
@@ -28,8 +29,8 @@ describe('Component: masterComponent', function() {
 
   describe('main component', function() {
     it('should render the text', function() {
-      var h1 = element.find('h1');
-      expect(h1.text()).toBe('Unit Testing AngularJS - 1.5');
+      let h4 = element.find('h4');
+      expect(h4.text()).toBe('Unit Testing AngularJS - 1.5');
     });
 
     it('should expose my title', function() {
@@ -51,7 +52,7 @@ describe('Component: masterComponent', function() {
 
     it('should expose myTextForCallFromChild', function() {
       expect(childController.myTextForCallFromChild).toBeDefined();
-      expect(childController.myTextForCallFromChild).toBe('Primo test');
+      expect(childController.myTextForCallFromChild).toBe('First test');
     });
 
     it('should have parent controller', function() {
@@ -61,7 +62,7 @@ describe('Component: masterComponent', function() {
 
     it('should have called parent function', function() {
       expect(controller.callFromChild).toHaveBeenCalled();
-      expect(controller.callFromChild).toHaveBeenCalledWith('Primo test');
+      expect(controller.callFromChild).toHaveBeenCalledWith('First test');
     });
   });
 
