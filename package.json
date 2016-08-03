@@ -1,0 +1,29 @@
+{
+  "name": "jasmine_angular_component",
+  "version": "1.0.0",
+  "description": "Angular components test with Jasmine",
+  "main": "index.html",
+  "scripts": {
+    "start": "lite-server .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dennybiasiolli/jasmine_angular_component.git"
+  },
+  "keywords": [
+    "jasmine",
+    "angularjs",
+    "angular",
+    "components"
+  ],
+  "author": "Denny Biasiolli",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dennybiasiolli/jasmine_angular_component/issues"
+  },
+  "homepage": "https://github.com/dennybiasiolli/jasmine_angular_component#readme",
+  "devDependencies": {
+    "lite-server": "^2.2.2"
+  }
+}
