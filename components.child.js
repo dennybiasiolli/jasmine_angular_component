@@ -3,14 +3,14 @@ angular.module('myModule')
   .component('childComponent', {
     bindings: {
       myChildBinding: '@',
-      myTextForCallFromChild: '@'
+      myTextForCallFromChild: '@',
+      onParentLoaded: '&'
     },
     controller: class {
-      constructor($timeout) {
+      constructor($scope) {
         let self = this;
-        $timeout(function() {
-          self.myChildTitle = 'Subtitle';
-        });
+        self.$scope = $scope;
+        self.myChildTitle = 'Subtitle';
       }
     },
     require: {
@@ -18,8 +18,9 @@ angular.module('myModule')
     },
     template: `
         <div style="border: 1px dashed red;">
-        <h3>{{ $ctrl.myChildTitle }} - {{ $ctrl.myChildBinding }}</h3>
-        <h4>{{ $ctrl.masterComponent.callFromChild($ctrl.myTextForCallFromChild) }}</h4>
+        <h3>Child Component</h3>
+        <h4>{{ $ctrl.myChildTitle }} - {{ $ctrl.myChildBinding }}</h4>
+        <p>{{ $ctrl.masterComponent.callFromChild($ctrl.myTextForCallFromChild) }}</p>
         </div>
     `
   });
