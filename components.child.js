@@ -3,21 +3,28 @@ angular.module('myModule')
   .component('childComponent', {
     bindings: {
       myChildBinding: '@',
-      myTextForCallFromChild: '@',
-      onParentLoaded: '&'
+      myTextForCallFromChild: '@'
     },
     controller: class {
-      constructor($scope) {
+      constructor($q, service3) {
         let self = this;
-        self.$scope = $scope;
+        self.$q = $q;
+        self.service3 = service3;
         self.myChildTitle = 'Subtitle';
+      }
+      $postLink() {
+        let self = this;
+        self.$q.when(self.service3.getServiceData('mumble mumble'))
+          .then(function(retVal) {
+            self.canShowComponent = true;
+          });
       }
     },
     require: {
       masterComponent: '^masterComponent'
     },
     template: `
-        <div style="border: 1px dashed red;">
+        <div ng-if="$ctrl.canShowComponent" style="border: 1px dashed red;">
         <h3>Child Component</h3>
         <h4>{{ $ctrl.myChildTitle }} - {{ $ctrl.myChildBinding }}</h4>
         <p>{{ $ctrl.masterComponent.callFromChild($ctrl.myTextForCallFromChild) }}</p>

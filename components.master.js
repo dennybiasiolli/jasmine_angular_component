@@ -6,23 +6,25 @@ angular.module('myModule')
       myTextForCallFromChild: '@'
     },
     controller: class {
-      constructor($scope, $q, service1, service2) {
+      constructor($q, service1, service2) {
         let self = this;
-        self.$scope = $scope;
         self.$q = $q;
         self.service1 = service1;
         self.service2 = service2;
         self.myTitle = 'Unit Testing AngularJS';
         self.myChildParameter = 'Child parameter';
+        self.promiseLoad = $q.defer();
+        self.promiseLoadCompleted = self.promiseLoad.promise;
       }
       $onInit() {
         let self = this;
-        return self.$q.when(self.service1.getServiceData('Tester'))
+        self.$q.when(self.service1.getServiceData('Tester'))
           .then(function(retVal) {
             self.$q.when(self.service2.getServiceData(retVal))
               .then(function(retVal2) {
                 self.promiseVal = retVal2;
-                self.masterLoaded = true;
+                self.canLoadChildren = true;
+                self.promiseLoad.resolve(true);
               });
           });
       }
@@ -48,7 +50,7 @@ angular.module('myModule')
         <h4>{{ $ctrl.myTitle }} - {{ $ctrl.myBinding }}</h4>
         <p>{{$ctrl.promiseVal}}</p>
         <child-component
-            ng-if="$ctrl.masterLoaded"
+            ng-if="$ctrl.canLoadChildren"
             my-child-binding="{{$ctrl.myChildParameter}}"
             my-text-for-call-from-child="{{$ctrl.myTextForCallFromChild}}">
         </child-component>

@@ -4,18 +4,16 @@ describe('Component', function() {
 
   let element, controller;
   let scope, $rootScope, $q, $timeout;
-  let deferred1, deferred2;
-  let spy1, spy2;
-  beforeEach(inject(function(_$rootScope_, _$compile_, _$q_, _$timeout_, _service1_, _service2_) {
+  beforeEach(inject(function(_$rootScope_, _$compile_, _$q_, _$timeout_, _service1_, _service2_, _service3_) {
     $rootScope = _$rootScope_;
     $q = _$q_;
     $timeout = _$timeout_;
     service1 = _service1_;
     service2 = _service2_;
-    deferred1 = $q.defer();
-    deferred2 = $q.defer();
+    service3 = _service3_;
     spyOn(service1, 'getServiceData').and.callThrough();
     spyOn(service2, 'getServiceData').and.callThrough();
+    spyOn(service3, 'getServiceData').and.callThrough();
     scope = $rootScope.$new();
     element = angular.element('<master-component my-binding="{{param1}}" my-text-for-call-from-child="{{param2}}"></master-component>');
     element = _$compile_(element)(scope);
@@ -64,6 +62,14 @@ describe('Component', function() {
     beforeEach(function() {
       childElement = element.find('child-component');
       childController = childElement.controller('childComponent');
+    });
+
+    beforeEach(function(done) {
+      scope.$apply();
+      service3.getServiceData().then(function(data) {
+        scope.$apply();
+        done();
+      });
     });
 
     it('should render the text', function() {
