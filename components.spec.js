@@ -3,14 +3,15 @@ describe('Component', function() {
   beforeEach(angular.mock.module('myModule'));
 
   let element, controller;
-  let scope, $rootScope, $q, $timeout;
-  beforeEach(inject(function(_$rootScope_, _$compile_, _$q_, _$timeout_, _service1_, _service2_, _service3_) {
+  let scope, $rootScope, $q, $timeout, $httpBackend;
+  beforeEach(inject(function(_$rootScope_, _$compile_, _$q_, _$timeout_, _service1_, _service2_, _service3_, _$httpBackend_) {
     $rootScope = _$rootScope_;
     $q = _$q_;
     $timeout = _$timeout_;
     service1 = _service1_;
     service2 = _service2_;
     service3 = _service3_;
+    $httpBackend = _$httpBackend_;
     spyOn(service1, 'getServiceData').and.callThrough();
     spyOn(service2, 'getServiceData').and.callThrough();
     spyOn(service3, 'getServiceData').and.callThrough();
@@ -54,6 +55,16 @@ describe('Component', function() {
     it('should have resolved all promises', function() {
       expect(service1.getServiceData).toHaveBeenCalledWith('Tester');
       expect(service2.getServiceData).toHaveBeenCalledWith('Mr. Tester');
+    });
+
+    it('should return available languages - async', function(done) {
+      let promise = controller.promiseLoadCompleted;
+      promise.then(function(retVal) {
+        expect(retVal).toBe(true);
+        done();
+      });
+      // flushes pending requests
+      $httpBackend.flush();
     });
   });
 
